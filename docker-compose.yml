@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  pocketbase:
+    container_name: pb_libras_ifsul
+    build:
+      dockerfile: Dockerfile
+      args:
+        - IP_ADDRESS=${IP_ADDRESS}
+        - PORT=${PORT}
+        - PB_VERSION=${PB_VERSION}
+    image: libras-ifsul:latest
+    networks:
+      pb_network:
+        ipv4_address: ${IP_ADDRESS}
+    ports:
+      - "${PORT}:${PORT}"
+    volumes:
+      - ./pb_data:/pb/pb_data
+      - ./pb_migrations:/pb/pb_migrations
+
+networks:
+  pb_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${IP_ADDRESS}/${IP_MASK}
